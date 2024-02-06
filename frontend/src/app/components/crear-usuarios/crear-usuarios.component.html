@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+
+    <div class=" container mt-5">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card">
+                    <div *ngIf="!loading" class="card-body text-center">
+                        <!-- <span class="titulo"> {{ titulo | uppercase }}</span>  -->
+                        <h1>Ingresar nuevo producto</h1>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" [(ngModel)]="email" class="form-control" placeholder="name@est.ups.edu.ec">
+                                <label>E-mail</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="password"  [(ngModel)]="psw" class="form-control" placeholder="Contraseña">
+                                <label>Contraseña</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="password"   [(ngModel)]="confirmpsw" class="form-control" placeholder="Contraseña">
+                                <label>Repetir la constraseña</label>
+                            </div>
+    
+                        <div class="mb-3">
+                            <button routerLink="/listar-usuarios" class="btn btn-secondary btn-lg float-start">VOLVER</button>
+    
+                            <button type="button" (click)="agregarUsuario()" class="btn btn-info btn-lg float-end">Aceptar</button>
+                        </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+</div>

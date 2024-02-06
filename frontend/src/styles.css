@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+
+.titulo{
+    font-size: 1.8rem;
+}
+
+.fas{
+    cursor: pointer;
+    margin-left: 18px;
+}
+
+html, body{
+    height: 100%;
+}
+
+.wrapper{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+.logo{
+    height: 130px;
+    /*Para separarlo del elemento que tiene el titulo login*/
+    margin-bottom: 10px;
+}
+
+.body{
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+}

@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap');
+
+
+.container-fluid a{
+    font-family: 'Abril Fatface', serif;
+    font-size: 70px;
+    padding-left: 20px;
+}

@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-lg-12 ">
+        <div class="card">
+          <div class="card-body text-center">
+            <span class="titulo"> Listado de productos </span>
+            <button class="btn btn-info float-end" routerLink="/crear-usuario">
+              Nuevo producto
+            </button>
+            <table *ngIf="listUsuarios.length > 0" class="table table-hover mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Nombre del producto</th>
+                  <th scope="col">Código</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+
+
+                  <!-- I added this header -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let usuario of listUsuarios; let texto; let i = index"
+                >
+                  <th scope="row">#</th>
+                  <td>{{ usuario.email }}</td>
+                  <td>{{ usuario.psw }}</td>
+                  <td>{{usuario.active ? 'Activo' : 'Inactivo'}}</td>
+                  <td>
+                    <i
+                      (click)="eliminarUsuario(usuario._id)"
+                      class="fas fa-solid fa-trash text-danger"
+                      ></i>
+                      <i> 
+                        
+                      </i>
+                  </td>
+                  <td>
+                    <!-- Aquí están tus botones de acción separados -->
+                    <button class="btn btn-success" (click)="activateUser(usuario._id)">Activar usuario</button>
+                  </td>
+                  <td>
+                    <!-- Aquí está tu nueva columna -->
+                    <button class="btn btn-warning" (click)="deactivateUser(usuario._id)">Desactivar usuario</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h5
+              style="text-align: start; margin-top: 10px"
+              *ngIf="listUsuarios.length == 0"
+            >
+              No hay usuarios registrados para mostrar
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+</div>
