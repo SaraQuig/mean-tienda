@@ -14,7 +14,7 @@
           <div class="card">
               <div class="card-body text-center">
                   <span class="titulo">LISTADO DE PRODUCTOS NOVEDADES IDEAS</span>
-                <button routerLink="/modal" class="btn btn-success float-end">PAGAR</button>
+                  <button routerLink="/modal" class="btn btn-success float-end" [disabled]="productosEnCarrito.length ===  0">PAGAR</button>
                 <!-- list-prod.component.html -->
 
                   <table *ngIf="listProductos.length >  0" class="table table-striped mt-3">

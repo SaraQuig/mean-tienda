@@ -3,29 +3,25 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const { mongoose } = require('./config/db');
-const orderRoutes = require('./routes/order');
 const app = express();
-const port = 3000
+const port = process.env.PORT ||  3000;
+
 app.set('nombreApp', 'Tienda');
-app.set('puerto', process.env.PORT || 3000);
+app.set('puerto', port);
 
-
-//Codigo que permite los cors desde cualquier origen
+// Habilitar CORS para todas las rutas
 app.use(cors());
-app.use(cors())
+
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json()); // Usa express.json() en lugar de bodyParser.json()
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-// Use the cliente routes
-app.use('/api', orderRoutes);
+// Usar las rutas de cliente
+app.use('/api', require('./routes/order'));
+app.use('/api', require('./routes/usuario'));
+app.use('/api/productos', require('./routes/producto'));
 
-app.use('/api', require('./routes/usuario'))
-app.use('/api/productos', require('./routes/producto'))
-
-app.listen(app.get('puerto'), () => {
+app.listen(port, () => {
     console.log('Nombre de la App', app.get('nombreApp'));
     console.log('Puerto del servidor', app.get('puerto'));
-
-})
+});

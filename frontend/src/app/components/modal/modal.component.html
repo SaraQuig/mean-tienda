@@ -9,26 +9,32 @@
                         <!-- <span class="titulo"> {{ titulo | uppercase }}</span>  -->
                         <h1>Registrar pago</h1>
                             <div class="form-floating mb-3 mt-3">
-                                <input type="text" [(ngModel)]="email" class="form-control" placeholder="name@est.ups.edu.ec">
+                                <input type="text" [(ngModel)]="email" class="form-control" required  [disabled]="camposDeshabilitados" placeholder="name@est.ups.edu.ec">
                                 <label>E-mail</label>
                             </div>
                             <div class="form-floating mb-3 mt-3">
-                                <input type="text"  [(ngModel)]="nombre" class="form-control" placeholder="Contraseña">
+                                <input type="text"  [(ngModel)]="nombre" class="form-control" required [disabled]="camposDeshabilitados" placeholder="Contraseña">
                                 <label>Nombre</label>
                             </div>
                             <div class="form-floating mb-3 mt-3">
-                                <input type="text"   [(ngModel)]="apellido" class="form-control" placeholder="Contraseña">
+                                <input type="text"   [(ngModel)]="apellido" required [disabled]="camposDeshabilitados" class="form-control" placeholder="Contraseña">
                                 <label>Apellido</label>
                             </div>
                             <div class="form-floating mb-3 mt-3">
-                                <input type="text"   [(ngModel)]="direccionEntrega" class="form-control" placeholder="Contraseña">
-                                <label>direccion de entrega</label>
+                                <input type="text"   [(ngModel)]="direccionEntrega" required [disabled]="camposDeshabilitados" class="form-control" placeholder="Contraseña">
+                                <label>Dirección de entrega</label>
                             </div>
+                            <p>El total a pagar es: {{ totalCarrito | currency:'USD':'symbol' }}</p><br>
+                            <p>Para realizar tu compra, por favor utiliza PayPal como método de pago. Haz clic en el botón de PayPal para iniciar el proceso.</p>
+
     
+                            <button class="btn btn-primary" type="button" (click)="habilitarCampos()" >PAYPAL</button>
                         <div class="mb-3">
                             <button routerLink="/" class="btn btn-secondary btn-lg float-start">VOLVER</button>
     
-                            <button type="button" (click)="agregarOrden()" class="btn btn-info btn-lg float-end">Aceptar</button>
+                            <button type="button" (click)="agregarOrden()" class="btn btn-info btn-lg float-end"  [disabled]="camposDeshabilitados">Aceptar</button>
+                            <!-- modal.component.html -->
+
                         </div>
                     </div>
                 </div>      
@@ -36,3 +42,39 @@
         </div>
     </div>
 </div>
+
+
+<!-- Footer -->
+
+
+<footer class="container-fluid py-5" style="background-color: black;">
+    <div class="floatbox">
+      <div class="item">
+        <div class="content">
+          <img src="../../../assets/img/iconos/candado.png" alt="candado">
+          <p>Pagos 100% seguros</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="content">
+          <img src="../../../assets/img/iconos/entrega.png" alt="candado">
+          <p>Entregas a toda la ciudad de Quito. Estamos ubicados en San José de Morán</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="content">
+          <img src="../../../assets/img/iconos/estrellas.png" alt="candado">
+          <p>Productos de calidad</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="content">
+          <p>Operamos con </p>
+          <a href="https://www.paypal.com/ec/signin">
+            <img src="../../../assets/img/iconos/paypal.png"  alt="candado">
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
