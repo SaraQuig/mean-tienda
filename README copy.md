@@ -1,2 +1,2 @@
-# Smart_Home
+# TIENDA
 Proyecto
