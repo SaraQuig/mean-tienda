@@ -6,6 +6,7 @@ const { mongoose } = require('./config/db');
 const app = express();
 const port = process.env.PORT ||  3000;
 
+//Nombre de la app
 app.set('nombreApp', 'Tienda');
 app.set('puerto', port);
 
