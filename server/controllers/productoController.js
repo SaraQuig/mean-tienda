@@ -1,6 +1,6 @@
 const Producto = require("../models/Producto");
 
-
+//aqui se conecta con la bbdd
 exports.crearProducto = async (req, res) => {
 
     try {

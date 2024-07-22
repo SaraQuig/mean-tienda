@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//atributos del producto
 const ProductoSchema = mongoose.Schema({
     nombre: {
         type: String,

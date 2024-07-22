@@ -5,3 +5,4 @@ mongoose.connect(URI)
 .then(db=> console.log('BD conectada'))
 .catch(err => console.error(err));
 module.exports=mongoose;
+//conexion a la base de datos

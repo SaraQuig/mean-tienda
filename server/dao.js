@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const authSchema = require('./models/Usuario')
 const authSchema_ = require('./models/Producto')
 
-
+//conexiones
 authSchema.statics = {
     create: function(data,cb){
         const user = new this(data)

@@ -1,6 +1,7 @@
 // controllers/clienteController.js
 const Order = require('../models/Order');
 
+//validaciones con la base de datos
 exports.crearOrden = async (req, res, next) => {
   try {
       const { email, nombre, apellido, direccionEntrega  } = req.body
