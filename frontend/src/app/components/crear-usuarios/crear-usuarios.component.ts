@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Usuario } from 'src/app/models/usuario';
-import { UsuariosService } from 'src/app/services/usuarios.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { buffer } from 'rxjs';
+import { UsuariosService } from '../../services/usuarios.service';
+import { Usuario } from '../../models/usuario';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-usuarios',
@@ -12,100 +12,86 @@ import { buffer } from 'rxjs';
   styleUrls: ['./crear-usuarios.component.css']
 })
 export class CrearUsuariosComponent implements OnInit {
-  //titulo = 'Crear producto';
-  titulo = 'Crear producto';
-  id ='';
-  email = ''
-  psw = ''
-  confirmpsw = ''
-  active=''
-  loading = false
+  usuarioForm: FormGroup;
+  titulo = 'Crear usuario';
+  id: string | null;
 
-  constructor(private toastr: ToastrService,
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService,
     private _usuarioService: UsuariosService,
-    private router: Router) { }
+    private aRouter: ActivatedRoute
+  ) {
+    this.usuarioForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email, this.emailDomainValidator]],
+      psw: ['', [Validators.required, this.passwordComplexityValidator]],
+      confirmpsw: ['', Validators.required],
+      active: [true]
+    }, { validator: this.passwordMatchValidator });
+    this.id = this.aRouter.snapshot.paramMap.get('id');
+  }
 
   ngOnInit(): void {
+    this.esEditar();
   }
-  //validacion de password
-  validatePasswordComplexity(password: string) {
-    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    return re.test(password);
-  }
-  //validacion de dominio de email
-  validateEmailDomain(email: string) {
+
+  emailDomainValidator(control: any) {
+    const email = control.value;
     const re = /^[^\s@]+@ups\.edu\.ec$/i;
-    return re.test(email);
+    if (!re.test(email)) {
+      return { emailDomain: true };
+    }
+    return null;
   }
+
+  passwordComplexityValidator(control: any) {
+    const password = control.value;
+    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    if (!re.test(password)) {
+      return { passwordComplexity: true };
+    }
+    return null;
+  }
+
+  passwordMatchValidator(group: FormGroup) {
+    const password = group.get('psw')?.value;
+    const confirmPassword = group.get('confirmpsw')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+
   agregarUsuario() {
-    //validar que el usuario ingrese campos
-    if (this.email == '' || this.psw == '' ) {
-      this.toastr.error('Todos los campos son obligatorios', 'Adiministrador')
-      return;
-    }
-
-    if (!this.validatePasswordComplexity(this.psw)) {
-      this.toastr.error('La contraseña debe tener un mínimo de 6 caracteres entre letras y números', 'Error')
-      return;
-    }
-
-    if (this.psw != this.confirmpsw) {
-      this.toastr.error('Las contraseñas no coinciden', 'Error')
-      return;
-    }
-
-    // Check domain
-    if (!this.validateEmailDomain(this.email)) {
-      this.toastr.error('Invalid domain. Email should end with @ups.edu.ec', 'Error')
-      return
-    }
-
-    //creamos el objeto
-    const user: Usuario = {
-      email: this.email,
-      psw: this.psw,
-      active: true
-    }
-
-    //Guardando el usuario creado
-    this.loading = true
-    // if (this.id) {
-    //   // Update existing user
-    //   this._usuarioService.editarUsuario(this.id, user).subscribe({
-    //     next: (v) => {
-    //       this.loading = false
-    //       this.toastr.success(`El usuario ${this.email} fue actualizado con exito`, 'Usuario actualizado')
-    //       this.router.navigate(['/listar-usuarios'])
-    //     },
-    //     error: (e: HttpErrorResponse) => {
-    //       this.loading = false
-    //       this.msjError(e)
-    //     }
-    //   })
-    // }else{
-
-      this._usuarioService.guardarUsuario(user).subscribe({
-        next: (v) => {
-          this.loading = false
-          this.toastr.success(`El usuario ${this.email} fue registrado con exito`, 'Usuario registrado')
-          this.router.navigate(['/listar-usuarios'])
-        },
-        error: (e: HttpErrorResponse) => {
-          this.loading = false
-          this.msjError(e)
-        }
-      })
+    // if (this.usuarioForm.invalid) {
+    //   this.toastr.error('Por favor, complete todos los campos correctamente.', 'Administrador');
+    //   return;
     // }
+
+    const user: Usuario = {
+      email: this.usuarioForm.get('email')?.value,
+      psw: this.usuarioForm.get('psw')?.value,
+      active: this.usuarioForm.get('active')?.value
+    };
+
+    this._usuarioService.guardarUsuario(user).subscribe(data => {
+      this.toastr.success('El usuario fue registrado con éxito!', 'Usuario Registrado!');
+      this.router.navigate(['/listar-usuarios']);
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      this.usuarioForm.reset();
+    });
   }
 
-  msjError(e: HttpErrorResponse) {
-    if (e.error.msg) {
-      this.toastr.error(e.error.msg, 'Error')
-    } else {
-      this.toastr.error(e.error.msg, 'Ocurrio un error')
+  esEditar() {
+    if (this.id !== null) {
+      this.titulo = 'Editar usuario';
+      this._usuarioService.obtenerUsuario(this.id).subscribe(data => {
+        this.usuarioForm.setValue({
+          email: data.email,
+          psw: '',
+          confirmpsw: '',
+          active: data.active
+        });
+      });
     }
   }
-
 }
-
-

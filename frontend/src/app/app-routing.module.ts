@@ -28,9 +28,6 @@ const routes: Routes = [
   {path: 'modal', component: ModalComponent},
 
   
-
-
-  
   //Esta linea siempre debe estar al final
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

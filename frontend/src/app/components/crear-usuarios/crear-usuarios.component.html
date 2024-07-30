@@ -1,33 +1,44 @@
 <app-navbar></app-navbar>
-<div class="wrapper">
-
-    <div class=" container mt-5">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <div class="card">
-                    <div *ngIf="!loading" class="card-body text-center">
-                        <!-- <span class="titulo"> {{ titulo | uppercase }}</span>  -->
-                        <h1>Ingresar nuevo producto</h1>
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="text" [(ngModel)]="email" class="form-control" placeholder="name@est.ups.edu.ec">
-                                <label>E-mail</label>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo"> {{ titulo | uppercase }}</span>
+                    <form class="mt-3" [formGroup]="usuarioForm" (ngSubmit)="agregarUsuario()">
+                        <div class="mb-3">
+                            <input type="email" formControlName="email" class="form-control form-control-lg" placeholder="name@ups.edu.ec">
+                            <div class="text-danger" *ngIf="usuarioForm.get('email')?.hasError('required') && usuarioForm.get('email')?.touched">
+                                <span>El E-mail <strong>es obligatorio</strong></span>
                             </div>
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="password"  [(ngModel)]="psw" class="form-control" placeholder="Contraseña">
-                                <label>Contraseña</label>
+                            <div class="text-danger" *ngIf="usuarioForm.get('email')?.hasError('emailDomain') && usuarioForm.get('email')?.touched">
+                                <span>El dominio del E-mail debe ser <strong>@ups.edu.ec</strong></span>
                             </div>
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="password"   [(ngModel)]="confirmpsw" class="form-control" placeholder="Contraseña">
-                                <label>Repetir la constraseña</label>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" formControlName="psw" class="form-control form-control-lg" placeholder="Contraseña">
+                            <div class="text-danger" *ngIf="usuarioForm.get('psw')?.hasError('required') && usuarioForm.get('psw')?.touched">
+                                <span>La contraseña <strong>es obligatoria</strong></span>
                             </div>
-    
+                            <div class="text-danger" *ngIf="usuarioForm.get('psw')?.hasError('passwordComplexity') && usuarioForm.get('psw')?.touched">
+                                <span>La contraseña debe tener un mínimo de 6 caracteres entre letras y números</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" formControlName="confirmpsw" class="form-control form-control-lg" placeholder="Repetir la contraseña">
+                            <div class="text-danger" *ngIf="usuarioForm.get('confirmpsw')?.hasError('required') && usuarioForm.get('confirmpsw')?.touched">
+                                <span>La repetición de la contraseña <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="usuarioForm.hasError('passwordMismatch') && usuarioForm.get('confirmpsw')?.touched">
+                                <span>Las contraseñas no coinciden</span>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <button routerLink="/listar-usuarios" class="btn btn-secondary btn-lg float-start">VOLVER</button>
-    
-                            <button type="button" (click)="agregarUsuario()" class="btn btn-info btn-lg float-end">Aceptar</button>
+                            <button type="submit" [disabled]="usuarioForm.invalid" class="btn btn-success btn-lg float-end">ACEPTAR</button>
                         </div>
-                    </div>
-                </div>      
+                    </form>
+                </div>
             </div>
         </div>
     </div>

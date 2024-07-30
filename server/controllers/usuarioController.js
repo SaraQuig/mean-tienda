@@ -6,10 +6,10 @@ const { response } = require('express');
 //Registrando usuarios
 exports.crearUsuario = async (req, res, next) => {
     try {
-        const { email, psw, precio, foto  } = req.body
+        const { email, psw} = req.body
         const hashPassword = await bcrypt.hash(psw, 10);
 
-        const usuario = new Usuario({ psw: hashPassword, email: email,precio:precio,foto:foto });
+        const usuario = new Usuario({ psw: hashPassword, email: email});
         await usuario.save();
 
         // User saved, create JWT
